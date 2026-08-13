@@ -36,3 +36,30 @@ document.addEventListener('DOMContentLoaded', () => {
     observer.observe(section);
   });
 });
+// Показ сообщения об успешной отправке
+if (window.location.search.includes('success=true')) {
+  const successHTML = `
+    <div class="fixed top-4 right-4 z-50 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg animate-bounce max-w-sm">
+      <div class="flex items-center gap-3">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+        </svg>
+        <div>
+          <p class="font-semibold">Заявка отправлена!</p>
+          <p class="text-sm text-green-100">Мы свяжемся с вами в ближайшее время</p>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.insertAdjacentHTML('afterbegin', successHTML);
+  
+  // Убираем параметр из URL
+  const url = new URL(window.location);
+  url.searchParams.delete('success');
+  window.history.replaceState({}, '', url);
+  
+  // Скрываем сообщение через 5 секунд
+  setTimeout(() => {
+    document.querySelector('.fixed').remove();
+  }, 5000);
+}
